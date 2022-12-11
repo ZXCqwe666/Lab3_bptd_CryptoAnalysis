@@ -29,5 +29,8 @@
     <ClInclude Include="console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="constant_tables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

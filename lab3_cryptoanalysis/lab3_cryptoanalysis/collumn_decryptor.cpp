@@ -9,4 +9,6 @@ void collumn_decryptor::decrypt(std::string message)
 	int size = message.size();
 	console::print("size: ");
 	console::print(size); tab
+
+
 }
