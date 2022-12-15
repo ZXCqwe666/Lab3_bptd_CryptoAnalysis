@@ -1,3 +1,6 @@
+#pragma once
+#include "console.h"
+#include <string>
 
 struct bitgramm
 {
@@ -46,17 +49,102 @@ bitgramm table_bitgramm[30]
 	{43, 57, {'î', 'í', 'ð', 'ë', 'à', 'è', 'ñ', ' '}, 'ÿ', {'â', 'ñ', 'ò', 'ï', 'ä', 'ê', 'ì', 'ë'}, 16, 84},
 };
 
+int factorial(int n)
+{
+	int factorial = 1;
+
+	for (int i = 1; i <= n; ++i) 
+	{
+		factorial *= i;
+	}
+
+	return factorial;
+}
+
+bool is_glas(char letter)
+{
+	if(letter == 'a' || letter == 'e' || letter == 'è' || letter == 'î'
+	|| letter == 'ó' || letter == 'û' || letter == 'ý' || letter == 'þ'
+	|| letter == 'ÿ') return true;
+
+	return false;
+}
+
 int evaluate_letter(char letter, char left, char right)
 {
+	bitgramm bitgram;
 	int eval = 0;
 
 	for (int i = 0; i < 30; i++)
 	{
-		if (letter == table_bitgramm[i].letter)
-		{
+		bitgram = table_bitgramm[i];
 
+		if (letter != bitgram.letter) continue;
+
+		if (left != '_')
+		{
+			for (int k = 0; k < 8; k++)
+			{
+				if (left == bitgram.left_letters[k]) eval += (100 + (k + 1));
+			}
+
+			bool l_glas = is_glas(left);
+			eval += l_glas * bitgram.left_glas;
+			eval += !l_glas * bitgram.left_sogl;
+		}
+
+		if (right != '_')
+		{
+			for (int k = 0; k < 8; k++)
+			{
+				if (right == bitgram.right_letters[k]) eval += (100 + (k + 1));
+			}
+
+			bool r_glas = is_glas(right);
+			eval += r_glas * bitgram.right_glas;
+			eval += !r_glas * bitgram.right_sogl;
 		}
 	}
 
 	return eval;
 };
+
+int evaluate_row(const std::string& word)
+{
+	int eval = 0;
+
+	for (int i = 0; i < word.size(); i++)
+	{
+		int left_id = i - 1;
+		char left_ch = left_id >= 0 ? word[left_id] : '_';
+
+		int right_id = i + 1;
+		char right_ch = right_id < word.size() ? word[right_id] : '_';
+
+		eval += evaluate_letter(word[i], left_ch, right_ch);
+	}
+
+	return eval;
+}
+
+int evaluate_matrix(int rows, int cols, const std::string& str)
+{
+	int eval = 0;
+
+	std::string row_word;
+	row_word.resize(cols);
+
+	for (int i = 0; i < rows; i++)
+	{
+		int start_id = cols * i;
+
+		for (int k = 0; k < cols; k++)
+		{
+			row_word[k] = str[start_id + k];
+		}
+
+		eval += evaluate_row(row_word);
+	}
+
+	return eval;
+}
