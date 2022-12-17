@@ -81,3 +81,8 @@ void PermutationGenerator::generate_permutations(int size)
 
     heap(variation, size);
 }
+
+void PermutationGenerator::permute_string_collums(int id, int cols, int rows, std::string& str_target, const std::string& str_source)
+{
+    
+}

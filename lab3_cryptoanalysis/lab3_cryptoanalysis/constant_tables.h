@@ -161,11 +161,11 @@ cd_result evaluate_permutations(int rows, int cols, const std::string& str)
 	int variations = factorial(cols);
 
 	PermutationGenerator::generate_permutations(cols);
-	PermutationGenerator::print_permutations();
 
 	for (int i = 0; i < variations; i++)
 	{
-		std::string permuted_str = permute_string(i, cols, str);
+		std::string permuted_str = str;
+		PermutationGenerator::permute_string_collums(i, cols, rows, permuted_str, str);
 		int eval = evaluate_matrix(10, 6, permuted_str);
 
 		if (eval > result.best_eval)
@@ -176,6 +176,4 @@ cd_result evaluate_permutations(int rows, int cols, const std::string& str)
 	printf("permutations: %i \n", variations);
 	printf("rows: %i cols: %i \n", rows, cols);
 	printf("best evaluation: %i \n", result.best_eval);
-
-	//decrypt using result.permutation_id
 }

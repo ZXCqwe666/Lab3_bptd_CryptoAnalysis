@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <string>
 #include <vector>
 
 class PermutationGenerator
@@ -17,4 +18,5 @@ private:
 public:
     static void print_permutations();
     static void generate_permutations(int size);
+    static void permute_string_collums(int id, int cols, int rows, std::string& str_target, const std::string& str_source);
 };
