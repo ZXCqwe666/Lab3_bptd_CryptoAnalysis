@@ -64,7 +64,7 @@ void PermutationGenerator::print_permutations()
     printf("\n");
 }
 
-void PermutationGenerator::generate_permutations(int size)
+bool PermutationGenerator::generate_permutations(int size)
 {
     permutations.clear();
     permute_size = size;
@@ -72,7 +72,7 @@ void PermutationGenerator::generate_permutations(int size)
     if (size > 10)
     {
         printf("[ERROR] Cant generate permutation of SIZE > 10");
-        return;
+        return false;
     }
 
     int* variation = new int[size];
@@ -80,9 +80,30 @@ void PermutationGenerator::generate_permutations(int size)
         variation[i] = i;
 
     heap(variation, size);
+    return true;
 }
 
 void PermutationGenerator::permute_string_collums(int id, int cols, int rows, std::string& str_target, const std::string& str_source)
 {
-    
+    for (int row = 0; row < rows; row++)
+    {
+        int word_index = row * rows;
+
+        for (int col = 0; col < cols; col++)
+        {
+            int perm_value = permutations[id * cols + col];
+            str_target[word_index + col] = str_source[word_index + perm_value];
+        }
+    }
+}
+
+void PermutationGenerator::print_string_matrix(int cols, int rows, const std::string& str_source)
+{
+    for (int row = 0; row < rows; row++)
+    {
+        for (int col = 0; col < cols; col++)
+        printf("%c ", str_source[row * cols + col]);
+        printf("\n");
+    }
+    printf("\n");
 }

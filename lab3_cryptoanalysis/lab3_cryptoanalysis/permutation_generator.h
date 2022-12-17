@@ -17,6 +17,7 @@ private:
 
 public:
     static void print_permutations();
-    static void generate_permutations(int size);
+    static bool generate_permutations(int size);
     static void permute_string_collums(int id, int cols, int rows, std::string& str_target, const std::string& str_source);
+    static void print_string_matrix(int cols, int rows, const std::string& str_source);
 };

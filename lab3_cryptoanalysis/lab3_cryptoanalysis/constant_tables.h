@@ -86,24 +86,24 @@ int evaluate_letter(char letter, char left, char right)
 		{
 			for (int k = 0; k < 8; k++)
 			{
-				if (left == bitgram.left_letters[k]) eval += (100 + (k + 1));
+				if (left == bitgram.left_letters[k]) eval += 100;
 			}
 
 			bool l_glas = is_glas(left);
-			eval += l_glas * bitgram.left_glas;
-			eval += !l_glas * bitgram.left_sogl;
+			if(l_glas) eval += bitgram.left_glas;
+			else eval += bitgram.left_sogl;
 		}
 
 		if (right != '_')
 		{
 			for (int k = 0; k < 8; k++)
 			{
-				if (right == bitgram.right_letters[k]) eval += (100 + (k + 1));
+				if (right == bitgram.right_letters[k]) eval += 100;
 			}
 
 			bool r_glas = is_glas(right);
-			eval += r_glas * bitgram.right_glas;
-			eval += !r_glas * bitgram.right_sogl;
+			if (r_glas) eval += bitgram.right_glas;
+			else eval += bitgram.right_sogl;
 		}
 	}
 
@@ -158,22 +158,36 @@ std::string permute_string(int permutation_id, int permutation_size, const std::
 cd_result evaluate_permutations(int rows, int cols, const std::string& str)
 {
 	cd_result result = {0,0};
+	std::string permuted_str = str;
 	int variations = factorial(cols);
 
-	PermutationGenerator::generate_permutations(cols);
+	if (!PermutationGenerator::generate_permutations(cols))
+	{
+		return result;
+	}
 
 	for (int i = 0; i < variations; i++)
 	{
-		std::string permuted_str = str;
 		PermutationGenerator::permute_string_collums(i, cols, rows, permuted_str, str);
-		int eval = evaluate_matrix(10, 6, permuted_str);
+		int eval = evaluate_matrix(rows, cols, permuted_str);
 
 		if (eval > result.best_eval)
+		{
 			result.best_eval = eval;
+			result.permutation_id = i;
+		}
 	}
 
 	printf("encrypted string: %s \n", str.c_str());
+	PermutationGenerator::print_string_matrix(cols, rows, str);
+
 	printf("permutations: %i \n", variations);
 	printf("rows: %i cols: %i \n", rows, cols);
 	printf("best evaluation: %i \n", result.best_eval);
+
+	PermutationGenerator::permute_string_collums(result.permutation_id, cols, rows, permuted_str, str);
+	printf("best evaluated string: %s \n", permuted_str.c_str());
+	PermutationGenerator::print_string_matrix(cols, rows, permuted_str);
+
+	return result;
 }
