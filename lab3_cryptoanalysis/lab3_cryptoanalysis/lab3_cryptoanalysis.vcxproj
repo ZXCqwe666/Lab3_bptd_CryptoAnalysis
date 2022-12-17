@@ -164,6 +164,7 @@
     <ClInclude Include="collumn_decryptor.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="constant_tables.h" />
+    <ClInclude Include="permutation_generator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
