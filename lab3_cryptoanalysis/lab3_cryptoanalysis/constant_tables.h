@@ -1,5 +1,6 @@
 #pragma once
-#include "console.h"
+
+#include "permutation_generator.h"
 #include <string>
 
 struct bitgramm
@@ -147,4 +148,34 @@ int evaluate_matrix(int rows, int cols, const std::string& str)
 	}
 
 	return eval;
+}
+
+std::string permute_string(int permutation_id, int permutation_size, const std::string& str)
+{
+	return str;
+}
+
+cd_result evaluate_permutations(int rows, int cols, const std::string& str)
+{
+	cd_result result = {0,0};
+	int variations = factorial(cols);
+
+	PermutationGenerator::generate_permutations(cols);
+	PermutationGenerator::print_permutations();
+
+	for (int i = 0; i < variations; i++)
+	{
+		std::string permuted_str = permute_string(i, cols, str);
+		int eval = evaluate_matrix(10, 6, permuted_str);
+
+		if (eval > result.best_eval)
+			result.best_eval = eval;
+	}
+
+	printf("encrypted string: %s \n", str.c_str());
+	printf("permutations: %i \n", variations);
+	printf("rows: %i cols: %i \n", rows, cols);
+	printf("best evaluation: %i \n", result.best_eval);
+
+	//decrypt using result.permutation_id
 }

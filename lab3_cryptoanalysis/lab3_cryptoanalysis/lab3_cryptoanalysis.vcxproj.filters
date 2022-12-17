@@ -21,6 +21,9 @@
     <ClCompile Include="collumn_decryptor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="permutation_generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collumn_decryptor.h">

@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="collumn_decryptor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="permutation_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collumn_decryptor.h" />
