@@ -1,6 +1,6 @@
 #include <iostream>
 #include "collumn_decryptor.h"
-#include "permutation_generator.h"
+#include "perestanovka.h"
 
 int main()
 {
