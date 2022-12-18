@@ -87,7 +87,7 @@ void PermutationGenerator::permute_string_collums(int id, int cols, int rows, st
 {
     for (int row = 0; row < rows; row++)
     {
-        int word_index = row * rows;
+        int word_index = row * cols;
 
         for (int col = 0; col < cols; col++)
         {
