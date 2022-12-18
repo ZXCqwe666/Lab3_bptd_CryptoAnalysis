@@ -157,7 +157,7 @@ std::string permute_string(int permutation_id, int permutation_size, const std::
 
 cd_result evaluate_permutations(int rows, int cols, const std::string& str)
 {
-	cd_result result = {0,0};
+	cd_result result = {0,0, rows, cols, "error"};
 	std::string permuted_str = str;
 	int variations = factorial(cols);
 
@@ -179,15 +179,13 @@ cd_result evaluate_permutations(int rows, int cols, const std::string& str)
 	}
 
 	printf("encrypted string: %s \n", str.c_str());
-	PermutationGenerator::print_string_matrix(cols, rows, str);
-
 	printf("permutations: %i \n", variations);
 	printf("rows: %i cols: %i \n", rows, cols);
 	printf("best evaluation: %i \n", result.best_eval);
 
 	PermutationGenerator::permute_string_collums(result.permutation_id, cols, rows, permuted_str, str);
-	printf("best evaluated string: %s \n", permuted_str.c_str());
-	PermutationGenerator::print_string_matrix(cols, rows, permuted_str);
+	printf("best evaluated string: %s \n \n", permuted_str.c_str());
 
+	result.str_result = permuted_str;
 	return result;
 }
