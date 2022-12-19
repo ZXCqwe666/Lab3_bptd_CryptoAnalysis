@@ -1,11 +1,101 @@
 #pragma once
 
+#include <iostream>
+#include <unordered_map>
+#include <algorithm>
+
 #define SP 100 // space ' '
 #define CM 101 // coma	','
 #define DT 102 // dot	'.'
 #define TR 103 // defis '-'
 
-int message[] = 
+struct letter_freq
+{
+	char letter;
+	float frequency;
+};
+
+struct letter_code
+{
+	int code;
+	char letter;
+};
+
+std::vector<letter_freq> letter_freq_table
+{
+	{'о',0.090f},
+	{'е',0.072f},
+	{'а',0.062f},
+	{'и',0.062f},
+	{'т',0.053f},
+	{'н',0.053f},
+	{'с',0.045f},
+	{'р',0.040f},
+	{'в',0.038f},
+	{'л',0.035f},
+	{'к',0.028f},
+	{'м',0.026f},
+	{'д',0.025f},
+	{'п',0.023f},
+	{'у',0.021f},
+	{'я',0.018f},
+	{'ы',0.016f},
+	{'з',0.016f},
+	{'ь',0.014f},
+	{'б',0.014f},
+	{'г',0.013f},
+	{'ч',0.012f},
+	{'й',0.010f},
+	{'х',0.009f},
+	{'ж',0.007f},
+	{'ю',0.006f},
+	{'ш',0.006f},
+	{'ц',0.004f},
+	{'щ',0.003f},
+	{'э',0.003f},
+	{'ф',0.002f}
+};
+
+std::vector<letter_code> letter_codes
+{
+	{46, 'о'}, //100%
+	{32, 'е'}, //100%
+	{55, 'а'}, //100%
+	{99, 'и'}, //100%
+	{37, 'с'}, //100%
+	{57, 'т'}, //100%
+	{52, 'н'}, //100%
+	{60, 'в'}, //100%
+	{25, 'р'}, //100%
+	{12, 'л'},
+	{67, 'п'}, //100%
+	{19, 'ы'}, //100% - мб
+	{75, 'к'},
+	{91, 'м'},
+	{15, 'у'}, //100%
+	{20, 'з'}, //100%
+	{11, 'д'},
+	{30, 'б'}, //100%
+	{28, 'ч'},
+	{63, 'х'}, 
+	{39, 'ь'}, //100%
+	{36, 'й'}, //100%
+	{78, 'г'}, //100%
+	{18, 'ш'},
+	{41, 'я'},
+	{48, 'ж'}, //100%
+	{61, 'ю'},
+	{74, 'ц'},
+	{DT, '.'},
+	{CM, ','},
+	{TR, '-'},
+	{SP, ' '}
+};
+
+
+const int size = 648;
+
+int message[size] =
 {
 	15, 48, 32, SP,
 	52, 32, SP,
@@ -115,3 +205,97 @@ int message[] =
 	60, 37, 32, DT
 };
 
+struct code_count
+{
+	int code;
+	int count;
+};
+
+bool compare_cc(code_count c1, code_count c2)
+{
+	return (c1.count > c2.count);
+}
+
+bool IsLetter(int number)
+{
+	return number < 100;
+}
+
+void AnalyseText()
+{
+	// calculate code counts 
+
+	int number_frequency[99] = { 0 };
+
+	for (int i = 0; i < size; i++)
+	{
+		int number = message[i];
+
+		if (IsLetter(number))
+		number_frequency[number]++;
+	}
+
+	// sort code counts 
+
+	std::vector<code_count> code_freq;
+
+	for (int i = 0; i < 99; i++)
+	{
+		if(number_frequency[i] != 0)
+		code_freq.push_back({i, number_frequency[i]});
+	}
+
+	std::sort(code_freq.begin(), code_freq.end(), compare_cc);
+
+	for (int i = 0; i < code_freq.size(); i++)
+	{
+		std::cout << "code: " << code_freq[i].code << " count: " << code_freq[i].count << "\n";
+	}
+
+	// decode string - most frequent
+
+	std::string str = "";
+	str.resize(size);
+
+	for(int i = 0; i < code_freq.size(); i++)
+	{
+		code_count cc = code_freq[i];
+		char letter = letter_freq_table[i].letter;
+
+		for (int n = 0; n < size; n++)
+		{
+			if (cc.code == message[n])
+			{
+				str[n] = letter;
+			}
+		}
+	}
+
+	for (int n = 0; n < size; n++)
+	{
+		if (message[n] == DT) str[n] = '.';
+		if (message[n] == CM) str[n] = ',';
+		if (message[n] == TR) str[n] = '-';
+		if (message[n] == SP) str[n] = ' ';
+	}
+
+	std::cout << str << "\n\n";
+
+	// decode "trying by hand"
+
+	std::string str_decoded = "";
+	str_decoded.resize(size);
+
+	for (int n = 0; n < size; n++)
+	{
+		for (int i = 0; i < letter_codes.size(); i++)
+		{
+			letter_code lc = letter_codes[i];
+
+			if (message[n] == lc.code)
+				str_decoded[n] = lc.letter;
+		}
+	}
+
+	std::cout << str_decoded << "\n\n";
+}
